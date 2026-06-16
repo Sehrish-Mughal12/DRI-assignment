@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
 
 type ButtonProps = {
   children: React.ReactNode;
@@ -10,7 +11,8 @@ type ButtonProps = {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
   icon?: React.ReactNode;
-  className?: string; // ✅ Add support
+  className?: string;
+  loading?: boolean;
 };
 
 export function Button({
@@ -22,7 +24,8 @@ export function Button({
   disabled = false,
   type = 'button',
   icon,
-  className = '', // ✅ Add default value
+  className = '',
+  loading = false,
 }: ButtonProps) {
   const baseStyles = 'inline-flex items-center justify-center rounded-md font-medium focus:outline-none transition-colors';
   const variantStyles = {
@@ -37,26 +40,36 @@ export function Button({
     lg: 'px-6 py-3 text-base',
   };
   const widthStyle = fullWidth ? 'w-full' : '';
-  const disabledStyle = disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer';
+  const isDisabled = disabled || loading;
+  const disabledStyle = isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer';
 
   return (
     <motion.button
       type={type}
       onClick={onClick}
-      disabled={disabled}
-      whileTap={{ scale: disabled ? 1 : 0.97 }}
-      whileHover={{ scale: disabled ? 1 : 1.03 }}
+      disabled={isDisabled}
+      whileTap={{ scale: isDisabled ? 1 : 0.97 }}
+      whileHover={{ scale: isDisabled ? 1 : 1.03 }}
       className={`
         ${baseStyles}
         ${variantStyles[variant]}
         ${sizeStyles[size]}
         ${widthStyle}
         ${disabledStyle}
-        ${className}  // ✅ Append user-defined className
+        ${className}
       `}
     >
-      {icon && <span className="mr-2">{icon}</span>}
-      {children}
+      {loading ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Loading...
+        </>
+      ) : (
+        <>
+          {icon && <span className="mr-2">{icon}</span>}
+          {children}
+        </>
+      )}
     </motion.button>
   );
 }

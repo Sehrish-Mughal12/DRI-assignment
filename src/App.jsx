@@ -14,6 +14,7 @@ import Browse from './pages/Browse';
 import Admin from './pages/Admin';
 import User from './pages/User';
 import PropertyDetail from './pages/PropertyDetail';
+import ButtonDemo from './pages/ButtonDemo';
 
 const client = new QueryClient();
 
@@ -32,6 +33,7 @@ function App() {
                   <Route path="/admin" element={<Admin />} />
                   <Route path="/user" element={<User />} />
                   <Route path="/property/:id" element={<PropertyDetail />} />
+                  <Route path="/demo/button" element={<ButtonDemo />} />
                 </Routes>
               </Layout>
             </WalletProvider>
